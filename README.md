@@ -17,13 +17,16 @@ product constraints are in [`PLAN.md`](PLAN.md).
 
 ## Build
 
-Install Android SDK Platform 37 and use a JDK compatible with the Android Gradle
-Plugin. From a machine with Gradle available:
+Install Android SDK Platform 37 (`platforms;android-37.0`) and build-tools 37.0.0,
+and use JDK 17. From a machine with Gradle available:
 
 ```sh
 gradle :app:assembleDebug
 gradle :app:installDebug
 ```
+
+A Gradle wrapper is checked in; `./gradlew` works the same way once
+`local.properties` points `sdk.dir` at an SDK containing Platform 37.
 
 Add the resulting **Dictate** tile through Android's Quick Settings editor.
 
