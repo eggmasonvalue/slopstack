@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.slopstack.dropslop"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.slopstack.dropslop"
-        minSdk = 37
-        targetSdk = 37
+        minSdk = 36
+        targetSdk = 36
         versionCode = (project.findProperty("releaseVersionCode") as String?)?.toIntOrNull() ?: 1
         versionName = (project.findProperty("releaseVersionName") as String?) ?: "1.0"
 
