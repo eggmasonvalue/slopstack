@@ -22,7 +22,7 @@ licenses/            Third-party font license notices
 
 ```mermaid
 flowchart LR
-  QS[Quick Settings Dictate tile] --> Activity[Transparent DictationActivity]
+  QS[Quick Settings Drop Slop tile] --> Activity[Transparent DropSlopActivity]
   Launcher[App drawer icon / Quick Tap / Assistant] --> Activity
   Activity --> Editor[Focused Compose text editor]
   Editor -->|Copy or Copy & return| Clipboard[System clipboard]
@@ -31,7 +31,7 @@ flowchart LR
 
 The app has no persistence layer, network service, or integration with any
 specific destination app.
-`DictationActivity` is reachable from the Quick Settings tile (the original,
+`DropSlopActivity` is reachable from the Quick Settings tile (the original,
 primary entry point) and, since a `MAIN`/`LAUNCHER` intent-filter was added for
 Quick Tap/Assistant support, also from the app drawer — both paths open the
 same transient popup. The clipboard is the only handoff boundary.

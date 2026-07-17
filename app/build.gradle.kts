@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.slopstack.dictate"
+    namespace = "com.slopstack.dropslop"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.slopstack.dictate"
+        applicationId = "com.slopstack.dropslop"
         minSdk = 37
         targetSdk = 37
         versionCode = (project.findProperty("releaseVersionCode") as String?)?.toIntOrNull() ?: 1

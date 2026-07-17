@@ -2,16 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
         android:allowBackup="false"
-        android:icon="@drawable/ic_dictate"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="SlopStack"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Dictate">
+        android:theme="@style/Theme.DropSlop">
         <activity
-            android:name=".DictationActivity"
+            android:name=".DropSlopActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:noHistory="true"
-            android:theme="@style/Theme.Dictate.Popup"
+            android:theme="@style/Theme.DropSlop.Popup"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,10 +21,10 @@
         </activity>
 
         <service
-            android:name=".DictationTileService"
+            android:name=".DropSlopTileService"
             android:exported="true"
-            android:icon="@drawable/ic_dictate"
-            android:label="Dictate"
+            android:icon="@drawable/ic_drop_slop"
+            android:label="Drop Slop"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />

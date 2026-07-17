@@ -1,4 +1,4 @@
-package com.slopstack.dictate
+package com.slopstack.dropslop
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -8,7 +8,7 @@ sealed interface ClipboardCommand {
     data class Copy(val text: String) : ClipboardCommand
 }
 
-object DictationActions {
+object DropSlopActions {
     fun copyCommandFor(text: String): ClipboardCommand.Copy? =
         text.takeIf { it.isNotBlank() }?.let(ClipboardCommand::Copy)
 }
@@ -21,6 +21,6 @@ class SystemClipboard(context: Context) {
     }
 
     private companion object {
-        const val CLIP_LABEL = "Dictation"
+        const val CLIP_LABEL = "Drop Slop"
     }
 }

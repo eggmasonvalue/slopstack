@@ -1,4 +1,4 @@
-package com.slopstack.dictate
+package com.slopstack.dropslop
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsFocused
@@ -13,7 +13,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-class DictationPopupTest {
+class DropSlopPopupTest {
     @get:Rule
     val composeRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -21,7 +21,7 @@ class DictationPopupTest {
     fun editor_is_focused_when_popup_opens() {
         setPopup()
 
-        composeRule.onNodeWithTag("dictation_editor").assertIsFocused()
+        composeRule.onNodeWithTag("drop_slop_editor").assertIsFocused()
     }
 
     @Test
@@ -29,11 +29,11 @@ class DictationPopupTest {
         var copied: ClipboardCommand.Copy? = null
         setPopup(onCopy = { copied = it })
 
-        composeRule.onNodeWithTag("dictation_editor").performTextInput("One line")
+        composeRule.onNodeWithTag("drop_slop_editor").performTextInput("One line")
         composeRule.onNodeWithTag("copy").performClick()
 
         assertEquals(ClipboardCommand.Copy("One line"), copied)
-        composeRule.onNodeWithTag("dictation_popup").assertExists()
+        composeRule.onNodeWithTag("drop_slop_popup").assertExists()
     }
 
     @Test
@@ -41,7 +41,7 @@ class DictationPopupTest {
         var copied: ClipboardCommand.Copy? = null
         setPopup(onCopyAndReturn = { copied = it })
 
-        composeRule.onNodeWithTag("dictation_editor").performTextInput("Return this")
+        composeRule.onNodeWithTag("drop_slop_editor").performTextInput("Return this")
         composeRule.onNodeWithTag("copy_and_return").performClick()
 
         assertEquals(ClipboardCommand.Copy("Return this"), copied)
@@ -52,7 +52,7 @@ class DictationPopupTest {
         var dismissed = false
         setPopup(onDismiss = { dismissed = true })
 
-        composeRule.onNodeWithTag("dictation_editor").performTextInput("Discard me")
+        composeRule.onNodeWithTag("drop_slop_editor").performTextInput("Discard me")
         composeRule.onNodeWithTag("close").performClick()
 
         assertTrue(dismissed)
@@ -61,12 +61,12 @@ class DictationPopupTest {
     @Test
     fun text_survives_saved_state_restoration() {
         val restorationTester = StateRestorationTester(composeRule)
-        restorationTester.setContent { DictationPopup({}, {}, {}) }
+        restorationTester.setContent { DropSlopPopup({}, {}, {}) }
 
-        composeRule.onNodeWithTag("dictation_editor").performTextInput("Keep me")
+        composeRule.onNodeWithTag("drop_slop_editor").performTextInput("Keep me")
         restorationTester.emulateSavedInstanceStateRestore()
 
-        composeRule.onNodeWithTag("dictation_editor").assertTextContains("Keep me")
+        composeRule.onNodeWithTag("drop_slop_editor").assertTextContains("Keep me")
     }
 
     private fun setPopup(
@@ -75,7 +75,7 @@ class DictationPopupTest {
         onDismiss: () -> Unit = {},
     ) {
         composeRule.setContent {
-            DictationPopup(
+            DropSlopPopup(
                 onCopy = onCopy,
                 onCopyAndReturn = onCopyAndReturn,
                 onDismiss = onDismiss,

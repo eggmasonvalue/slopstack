@@ -58,7 +58,7 @@ requirements exceed what the previous toolchain could resolve.
 
 Tradeoff: The app depends on a pre-release library on its only visual layer.
 Alpha Expressive APIs can still change shape or be renamed before 1.5.0 stable;
-upgrading again later may require touching `DictationActivity.kt`. This is
+upgrading again later may require touching `DropSlopActivity.kt`. This is
 accepted here because the app is personal, single-device software where
 visual currency ranks above dependency conservatism — a tradeoff that would
 not be appropriate for software with other users or release obligations.
@@ -123,7 +123,7 @@ Status: active
 
 ## 2026-07-17 — Add a launcher entry point for Quick Tap / Assistant
 
-Context: The original design deliberately gave `DictationActivity` no launcher
+Context: The original design deliberately gave `DropSlopActivity` no launcher
 category so the app wouldn't appear as a conventional app (see "Restrict the
 app to Pixel 10" and the app's original non-goals). The owner later wanted
 Pixel's Quick Tap (double-tap-back) gesture to open the popup. Quick Tap's
@@ -132,7 +132,7 @@ long-press app-shortcut menu — only lists apps with a `MAIN`/`LAUNCHER`
 activity; none of them require or use an `AccessibilityService`, which had been
 the rejected alternative (see the popup/clipboard decision above).
 
-Decision: Add a `MAIN`/`LAUNCHER` intent-filter to `DictationActivity` and mark
+Decision: Add a `MAIN`/`LAUNCHER` intent-filter to `DropSlopActivity` and mark
 it `exported="true"` (required for the launcher/Quick Tap/Assistant, all
 external processes, to start it). `excludeFromRecents` and `noHistory` are
 unchanged, so tapping the drawer icon opens and closes the same transient

@@ -1,4 +1,4 @@
-package com.slopstack.dictate
+package com.slopstack.dropslop
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -60,7 +61,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-class DictationActivity : ComponentActivity() {
+class DropSlopActivity : ComponentActivity() {
     private lateinit var clipboard: SystemClipboard
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,8 +69,8 @@ class DictationActivity : ComponentActivity() {
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         clipboard = SystemClipboard(this)
         setContent {
-            DictateTheme {
-                DictationPopup(
+            DropSlopTheme {
+                DropSlopPopup(
                     onCopy = { command -> clipboard.execute(command) },
                     onCopyAndReturn = { command ->
                         clipboard.execute(command)
@@ -88,7 +89,7 @@ class DictationActivity : ComponentActivity() {
 
 private val GoogleSansFlex = FontFamily(Font(R.font.google_sans_flex))
 
-private val DictateTypography = Typography().let { base ->
+private val DropSlopTypography = Typography().let { base ->
     base.copy(
         titleMedium = base.titleMedium.copy(fontFamily = GoogleSansFlex),
         bodyLarge = base.bodyLarge.copy(fontFamily = GoogleSansFlex),
@@ -99,13 +100,13 @@ private val DictateTypography = Typography().let { base ->
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun DictateTheme(content: @Composable () -> Unit) {
+private fun DropSlopTheme(content: @Composable () -> Unit) {
     // minSdk = 37, so wallpaper-derived dynamic color (Android 12+) is always available;
     // no pre-S fallback branch is needed.
     val colorScheme = dynamicDarkColorScheme(LocalContext.current)
     MaterialExpressiveTheme(
         colorScheme = colorScheme,
-        typography = DictateTypography,
+        typography = DropSlopTypography,
         motionScheme = MotionScheme.expressive(),
         content = content,
     )
@@ -113,7 +114,7 @@ private fun DictateTheme(content: @Composable () -> Unit) {
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun DictationPopup(
+fun DropSlopPopup(
     onCopy: (ClipboardCommand.Copy) -> Unit,
     onCopyAndReturn: (ClipboardCommand.Copy) -> Unit,
     onDismiss: () -> Unit,
@@ -122,7 +123,7 @@ fun DictationPopup(
     var copied by rememberSaveable { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val command = DictationActions.copyCommandFor(text)
+    val command = DropSlopActions.copyCommandFor(text)
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
@@ -134,14 +135,16 @@ fun DictationPopup(
         modifier = Modifier
             .fillMaxSize()
             .background(ComposeColor.Transparent)
+            .imePadding()
             .windowInsetsPadding(WindowInsets.systemBars)
-            .padding(horizontal = 20.dp, vertical = 16.dp)
+            .padding(horizontal = 20.dp)
+            .padding(top = 72.dp, bottom = 16.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
                 onClick = onDismiss,
             ),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.TopCenter,
     ) {
         Surface(
             modifier = Modifier
@@ -152,7 +155,7 @@ fun DictationPopup(
                     indication = null,
                     onClick = {},
                 )
-                .testTag("dictation_popup"),
+                .testTag("drop_slop_popup"),
             color = MaterialTheme.colorScheme.surface.copy(alpha = 0.97f),
             contentColor = MaterialTheme.colorScheme.onSurface,
             shape = MaterialTheme.shapes.extraLarge,
@@ -165,7 +168,7 @@ fun DictationPopup(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text("Dictate", fontWeight = FontWeight.Medium)
+                    Text("Drop Slop", fontWeight = FontWeight.Medium)
                     IconButton(
                         modifier = Modifier.testTag("close"),
                         shapes = IconButtonDefaults.shapes(),
@@ -185,7 +188,7 @@ fun DictationPopup(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(18.dp))
                         .focusRequester(focusRequester)
-                        .testTag("dictation_editor"),
+                        .testTag("drop_slop_editor"),
                     placeholder = { Text("Speak or type") },
                     minLines = 4,
                     maxLines = 8,

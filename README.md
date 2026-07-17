@@ -6,6 +6,8 @@ whenever — you double-tap, speak or type it into a small focused box, tap
 **Copy & return**, and paste it wherever it actually belongs once you're ready.
 No app switch feels this light.
 
+![The Drop Slop popup, mid-thought, with Copy and Copy & return buttons](docs/screenshot.png)
+
 Voice is the star: any voice-to-text keyboard (Wispr Flow, Gboard voice
 typing, etc.) works here, because SlopStack is just a normal, focused Android
 text field — dictation engines already know how to type into that. SlopStack
@@ -20,7 +22,7 @@ constraints, and durable rationale live in [`context/`](context/) (see
 
 ## Intended use
 
-1. Double-tap into SlopStack — from the Quick Settings **Dictate** tile, the
+1. Double-tap into SlopStack — from the Quick Settings **Drop Slop** tile, the
    app drawer icon, Quick Tap, or Assistant.
 2. Dictate or type your thought in the popup.
 3. Tap **Copy & return** to go straight back to what you were doing, with the
@@ -42,7 +44,7 @@ gradle :app:installDebug
 A Gradle wrapper is checked in; `./gradlew` works the same way once
 `local.properties` points `sdk.dir` at an SDK containing Platform 37.
 
-Add the resulting **Dictate** tile through Android's Quick Settings editor.
+Add the resulting **Drop Slop** tile through Android's Quick Settings editor.
 
 ## Getting an APK without building locally
 
