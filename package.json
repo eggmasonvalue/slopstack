@@ -1,0 +1,11 @@
+{
+  "name": "slopstack-tools",
+  "private": true,
+  "scripts": {
+    "lint:md": "markdownlint-cli2 AGENTS.md README.md 'context/**/*.md'",
+    "format:md": "markdownlint-cli2 --fix AGENTS.md README.md 'context/**/*.md'"
+  },
+  "devDependencies": {
+    "markdownlint-cli2": "^0.17.2"
+  }
+}
