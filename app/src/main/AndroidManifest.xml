@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:allowBackup="false"
+        android:icon="@drawable/ic_dictate"
+        android:label="Dictate"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Dictate">
+        <activity
+            android:name=".DictationActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:theme="@style/Theme.Dictate.Popup"
+            android:windowSoftInputMode="adjustResize" />
+
+        <service
+            android:name=".DictationTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_dictate"
+            android:label="Dictate"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>
