@@ -2,8 +2,8 @@
 
 The most seamless, elegant way to capture an ephemeral thought and get straight
 back to what you were doing. An idea strikes — mid-video, mid-scroll,
-whenever — you double-tap, speak or type it into a small focused box, tap
-**Copy & return**, and paste it wherever it actually belongs once you're ready.
+whenever — you double-tap the back of your Pixel, speak or type it into a sleek box, tap
+**Copy & return** to go right back to your activity. Paste it wherever it actually belongs once you're ready.
 No app switch feels this light.
 
 ![The Drop Slop popup, mid-thought, with Copy and Copy & return buttons](docs/screenshot.png)
@@ -12,7 +12,7 @@ Voice is the star: any voice-to-text keyboard (Wispr Flow, Gboard voice
 typing, etc.) works here, because SlopStack is just a normal, focused Android
 text field — dictation engines already know how to type into that. SlopStack
 doesn't care what you paste into either; a terminal, a chat, a note, a task
-tracker, an email draft — the clipboard doesn't discriminate. It's a place to
+tracker, an email draft. It's a place to
 push your unrefined slop of a thought, and pop it back out the moment you need
 it — nothing sticks around longer than that.
 
@@ -22,8 +22,7 @@ constraints, and durable rationale live in [`context/`](context/) (see
 
 ## Intended use
 
-1. Double-tap into SlopStack — from the Quick Settings **Drop Slop** tile, the
-   app drawer icon, Quick Tap, or Assistant.
+1. Double-tap into SlopStack using the Quick Tap feature in Pixels or other shortcuts from OEMs like Moto, or from the Quick Settings **Drop Slop** tile
 2. Dictate or type your thought in the popup.
 3. Tap **Copy & return** to go straight back to what you were doing, with the
    text sitting on the clipboard.
