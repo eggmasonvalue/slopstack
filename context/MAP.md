@@ -26,11 +26,14 @@ flowchart LR
   Launcher[App drawer icon / Quick Tap / Assistant] --> Activity
   Activity --> Editor[Focused Compose text editor]
   Editor -->|Copy or Copy & return| Clipboard[System clipboard]
+  Editor -->|same confirmed copy| LastDrop[Private one-item last-drop store]
+  LastDrop -->|Restore last copy| Editor
   Clipboard --> Paste[Paste anywhere, whenever the user returns to it]
 ```
 
-The app has no persistence layer, network service, or integration with any
-specific destination app.
+The app has a private, one-item persistence path only for its own most recently
+confirmed copied text; a newer confirmed copy replaces it. It has no network
+service or integration with any specific destination app.
 `DropSlopActivity` is reachable from the Quick Settings tile (the original,
 primary entry point) and, since a `MAIN`/`LAUNCHER` intent-filter was added for
 Quick Tap/Assistant support, also from the app drawer — both paths open the

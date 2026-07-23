@@ -14,7 +14,9 @@ text field — dictation engines already know how to type into that. SlopStack
 doesn't care what you paste into either; a terminal, a chat, a note, a task
 tracker, an email draft. It's a place to
 push your unrefined slop of a thought, and pop it back out the moment you need
-it — nothing sticks around longer than that.
+it. SlopStack also retains the one most recently copied drop in its private
+on-device storage, so it can be restored after Gboard's clipboard history
+expires; copying a newer drop replaces it.
 
 The project is a single Android application module. Product intent, design
 constraints, and durable rationale live in [`context/`](context/) (see
@@ -26,7 +28,9 @@ constraints, and durable rationale live in [`context/`](context/) (see
 2. Dictate or type your thought in the popup.
 3. Tap **Copy & return** to go straight back to what you were doing, with the
    text sitting on the clipboard.
-4. Paste it later, anywhere you want.
+4. Paste it later, anywhere you want. If the clipboard expires before then,
+   reopen SlopStack and tap **Restore last copy** to load its one retained drop
+   back into the editor.
 
 ## Build
 

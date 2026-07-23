@@ -147,3 +147,26 @@ Settings flow and OEM battery-optimization kills make sideloaded accessibility
 services unreliable, whereas a launcher activity has no such failure modes.
 
 Status: active
+
+## 2026-07-23 — Retain one confirmed copy in private app storage
+
+Context: Gboard's clipboard history expires copied text after roughly an hour.
+That expiry can lose a drop before the owner returns to the destination app,
+which defeats SlopStack's handoff even though SlopStack itself originated the
+text.
+
+Decision: After SlopStack successfully writes a nonblank drop to the system
+clipboard, save that same plain text as one value in private app storage. A
+newer successful SlopStack copy replaces it. On a subsequent empty invocation,
+the popup offers **Restore last copy**, which puts the saved value in the editor
+for review or editing without changing the system clipboard. There is no
+history, expiration job, clipboard monitoring, or persistence of drafts and
+dismissed text.
+
+Tradeoff: One copied drop survives process death and reboot, reversing the
+original fully ephemeral-text constraint and leaving potentially sensitive text
+on the device until the next SlopStack copy. The deliberately small, opt-in
+restore affordance and one-item replacement rule preserve the popup's
+single-drop purpose without turning it into a clipboard manager.
+
+Status: active

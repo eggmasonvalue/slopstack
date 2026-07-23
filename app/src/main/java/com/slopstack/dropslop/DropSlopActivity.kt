@@ -12,6 +12,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -35,6 +36,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.Typography
@@ -63,23 +65,31 @@ import androidx.compose.ui.unit.sp
 
 class DropSlopActivity : ComponentActivity() {
     private lateinit var clipboard: SystemClipboard
+    private lateinit var lastCopiedTextStore: LastCopiedTextStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         clipboard = SystemClipboard(this)
+        lastCopiedTextStore = LastCopiedTextStore(this)
         setContent {
             DropSlopTheme {
                 DropSlopPopup(
-                    onCopy = { command -> clipboard.execute(command) },
+                    lastCopiedText = lastCopiedTextStore.read(),
+                    onCopy = ::copy,
                     onCopyAndReturn = { command ->
-                        clipboard.execute(command)
+                        copy(command)
                         window.decorView.postDelayed({ finishAfterTransition() }, EXIT_CONFIRMATION_MS)
                     },
                     onDismiss = ::finishAfterTransition,
                 )
             }
         }
+    }
+
+    private fun copy(command: ClipboardCommand.Copy) {
+        clipboard.execute(command)
+        lastCopiedTextStore.save(command.text)
     }
 
     private companion object {
@@ -115,6 +125,7 @@ private fun DropSlopTheme(content: @Composable () -> Unit) {
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DropSlopPopup(
+    lastCopiedText: String? = null,
     onCopy: (ClipboardCommand.Copy) -> Unit,
     onCopyAndReturn: (ClipboardCommand.Copy) -> Unit,
     onDismiss: () -> Unit,
@@ -205,14 +216,23 @@ fun DropSlopPopup(
                     horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    if (copied) {
-                        Text(
+                    when {
+                        copied -> Text(
                             text = "Copied",
                             color = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier.weight(1f),
                         )
-                    } else {
-                        Spacer(Modifier.weight(1f))
+                        lastCopiedText != null && text.isBlank() -> TextButton(
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag("restore_last_copy"),
+                            shapes = ButtonDefaults.shapes(),
+                            contentPadding = PaddingValues(0.dp),
+                            onClick = { text = lastCopiedText },
+                        ) {
+                            Text("Restore", maxLines = 1)
+                        }
+                        else -> Spacer(Modifier.weight(1f))
                     }
                     FilledTonalButton(
                         modifier = Modifier.testTag("copy"),

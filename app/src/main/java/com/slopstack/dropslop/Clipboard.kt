@@ -24,3 +24,18 @@ class SystemClipboard(context: Context) {
         const val CLIP_LABEL = "Drop Slop"
     }
 }
+
+class LastCopiedTextStore(context: Context) {
+    private val preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+
+    fun read(): String? = preferences.getString(LAST_COPIED_TEXT_KEY, null)?.takeIf(String::isNotBlank)
+
+    fun save(text: String) {
+        preferences.edit().putString(LAST_COPIED_TEXT_KEY, text).apply()
+    }
+
+    private companion object {
+        const val PREFERENCES_NAME = "drop_slop"
+        const val LAST_COPIED_TEXT_KEY = "last_copied_text"
+    }
+}
