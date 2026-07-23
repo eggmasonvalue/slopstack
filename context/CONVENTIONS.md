@@ -4,7 +4,8 @@
 - Keep the Quick Settings tile stateless.
 - Start every dictation invocation with an empty editor.
 - Keep clipboard writes plain text only.
-- Keep user text in saved UI state only; do not persist it.
+- Keep drafts in saved UI state only; persist only the most recently confirmed
+  copied text in private app storage, replacing it on the next confirmed copy.
 - Do not add network calls, analytics, telemetry, crash reporting, or cloud sync.
 - Do not add accounts, billing, storage permissions, or notification permission.
 - Do not add background services, WorkManager jobs, or other work that runs

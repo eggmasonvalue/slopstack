@@ -59,9 +59,37 @@ class DropSlopPopupTest {
     }
 
     @Test
+    fun restore_last_copy_loads_text_without_copying() {
+        var copied: ClipboardCommand.Copy? = null
+        setPopup(lastCopiedText = "Saved drop", onCopy = { copied = it })
+
+        composeRule.onNodeWithTag("restore_last_copy").performClick()
+
+        composeRule.onNodeWithTag("drop_slop_editor").assertTextContains("Saved drop")
+        composeRule.onNodeWithTag("restore_last_copy").assertDoesNotExist()
+        assertEquals(null, copied)
+    }
+
+    @Test
+    fun restore_last_copy_is_hidden_after_typing() {
+        setPopup(lastCopiedText = "Saved drop")
+
+        composeRule.onNodeWithTag("drop_slop_editor").performTextInput("New drop")
+
+        composeRule.onNodeWithTag("restore_last_copy").assertDoesNotExist()
+    }
+
+    @Test
+    fun restore_last_copy_is_hidden_without_a_saved_drop() {
+        setPopup()
+
+        composeRule.onNodeWithTag("restore_last_copy").assertDoesNotExist()
+    }
+
+    @Test
     fun text_survives_saved_state_restoration() {
         val restorationTester = StateRestorationTester(composeRule)
-        restorationTester.setContent { DropSlopPopup({}, {}, {}) }
+        restorationTester.setContent { DropSlopPopup(onCopy = {}, onCopyAndReturn = {}, onDismiss = {}) }
 
         composeRule.onNodeWithTag("drop_slop_editor").performTextInput("Keep me")
         restorationTester.emulateSavedInstanceStateRestore()
@@ -70,12 +98,14 @@ class DropSlopPopupTest {
     }
 
     private fun setPopup(
+        lastCopiedText: String? = null,
         onCopy: (ClipboardCommand.Copy) -> Unit = {},
         onCopyAndReturn: (ClipboardCommand.Copy) -> Unit = {},
         onDismiss: () -> Unit = {},
     ) {
         composeRule.setContent {
             DropSlopPopup(
+                lastCopiedText = lastCopiedText,
                 onCopy = onCopy,
                 onCopyAndReturn = onCopyAndReturn,
                 onDismiss = onDismiss,
