@@ -2,6 +2,7 @@ package com.slopstack.dropslop
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
@@ -12,6 +13,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipe
+import androidx.compose.ui.text.TextRange
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -72,6 +74,22 @@ class DropSlopPopupTest {
         composeRule.onNodeWithTag("drop_slop_editor").assertTextContains("Saved drop")
         composeRule.onNodeWithTag("restore_last_copy").assertDoesNotExist()
         assertEquals(null, copied)
+    }
+
+    @Test
+    fun restore_last_copy_places_cursor_at_end() {
+        setPopup(lastCopiedText = "Saved drop")
+
+        composeRule.onNodeWithTag("restore_last_copy").performClick()
+
+        val editor = composeRule.onNodeWithTag("drop_slop_editor")
+        editor.assertIsFocused()
+        assertEquals(
+            TextRange("Saved drop".length),
+            editor.fetchSemanticsNode().config[SemanticsProperties.TextSelectionRange],
+        )
+        editor.performTextInput("!")
+        editor.assertTextContains("Saved drop!")
     }
 
     @Test
