@@ -14,7 +14,7 @@ app/
 ├── src/test/        Unit tests for clipboard command selection
 └── src/androidTest/ Compose interaction and state-restoration tests
 context/             Agent-maintained project context
-gradle/              Version catalog (material3 pinned to a 1.5.0-alpha for M3 Expressive)
+gradle/              Version catalog (Compose BOM 2026.11.01 with stable M3 Expressive 1.5.0)
 licenses/            Third-party font license notices
 ```
 

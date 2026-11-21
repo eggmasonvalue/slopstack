@@ -63,7 +63,7 @@ accepted here because the app is personal, single-device software where
 visual currency ranks above dependency conservatism — a tradeoff that would
 not be appropriate for software with other users or release obligations.
 
-Status: active
+Status: superseded (2026-11-20: Compose Material 3 1.5.0 graduated to stable in Compose BOM 2026.11.01, so the alpha override was removed in favor of the BOM's stable pick.)
 
 ## 2026-07-17 — Bundle Google Sans Flex as a font resource, not via downloadable-fonts API
 
