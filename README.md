@@ -34,7 +34,7 @@ constraints, and durable rationale live in [`context/`](context/) (see
 
 ## Build
 
-Install Android SDK Platform 37 (`platforms;android-37.0`) and build-tools 37.0.0,
+Install Android SDK Platform 37.1 (`platforms;android-37.1`) and build-tools 37.0.0,
 and use JDK 21 (Gradle 9.5, AGP 9.3, and the Material 3 Expressive dependencies
 require it; app bytecode still targets Java 17). From a machine with Gradle
 available:
@@ -45,7 +45,7 @@ gradle :app:installDebug
 ```
 
 A Gradle wrapper is checked in; `./gradlew` works the same way once
-`local.properties` points `sdk.dir` at an SDK containing Platform 37.
+`local.properties` points `sdk.dir` at an SDK containing Platform 37.1.
 
 Add the resulting **Drop Slop** tile through Android's Quick Settings editor.
 

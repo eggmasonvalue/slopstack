@@ -1,13 +1,17 @@
 package com.slopstack.dropslop
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipe
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -87,14 +91,34 @@ class DropSlopPopupTest {
     }
 
     @Test
-    fun text_survives_saved_state_restoration() {
+    fun dragging_handle_moves_popup() {
+        setPopup()
+
+        val initialTop = composeRule.onNodeWithTag("drop_slop_popup").getUnclippedBoundsInRoot().top
+        composeRule.onNodeWithTag("drop_slop_drag_handle").performTouchInput {
+            swipe(start = center, end = center + Offset(0f, 200f))
+        }
+        val movedTop = composeRule.onNodeWithTag("drop_slop_popup").getUnclippedBoundsInRoot().top
+
+        assertTrue("Expected popup to move downward after drag", movedTop > initialTop)
+    }
+
+    @Test
+    fun text_and_position_survive_saved_state_restoration() {
         val restorationTester = StateRestorationTester(composeRule)
         restorationTester.setContent { DropSlopPopup(onCopy = {}, onCopyAndReturn = {}, onDismiss = {}) }
 
         composeRule.onNodeWithTag("drop_slop_editor").performTextInput("Keep me")
+        composeRule.onNodeWithTag("drop_slop_drag_handle").performTouchInput {
+            swipe(start = center, end = center + Offset(0f, 160f))
+        }
+        val draggedTop = composeRule.onNodeWithTag("drop_slop_popup").getUnclippedBoundsInRoot().top
+
         restorationTester.emulateSavedInstanceStateRestore()
 
         composeRule.onNodeWithTag("drop_slop_editor").assertTextContains("Keep me")
+        val restoredTop = composeRule.onNodeWithTag("drop_slop_popup").getUnclippedBoundsInRoot().top
+        assertEquals(draggedTop.value, restoredTop.value, 1f)
     }
 
     private fun setPopup(
