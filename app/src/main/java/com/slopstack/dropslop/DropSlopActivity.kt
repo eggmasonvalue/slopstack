@@ -73,8 +73,10 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -150,7 +152,9 @@ fun DropSlopPopup(
     onCopyAndReturn: (ClipboardCommand.Copy) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    var text by rememberSaveable { mutableStateOf("") }
+    var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue())
+    }
     var copied by rememberSaveable { mutableStateOf(false) }
     var viewportSize by remember { mutableStateOf(IntSize.Zero) }
     var popupSize by remember { mutableStateOf(IntSize.Zero) }
@@ -159,7 +163,7 @@ fun DropSlopPopup(
     var isDragging by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val command = DropSlopActions.copyCommandFor(text)
+    val command = DropSlopActions.copyCommandFor(textFieldValue.text)
     val copyInteractionSource = remember { MutableInteractionSource() }
     val copyAndReturnInteractionSource = remember { MutableInteractionSource() }
 
@@ -273,10 +277,12 @@ fun DropSlopPopup(
                     )
                 }
                 TextField(
-                    value = text,
-                    onValueChange = {
-                        text = it
-                        copied = false
+                    value = textFieldValue,
+                    onValueChange = { next ->
+                        if (next.text != textFieldValue.text) {
+                            copied = false
+                        }
+                        textFieldValue = next
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -319,14 +325,21 @@ fun DropSlopPopup(
                                 color = MaterialTheme.colorScheme.secondary,
                                 maxLines = 1,
                             )
-                            lastCopiedText != null && text.isBlank() -> OutlinedButton(
+                            lastCopiedText != null && textFieldValue.text.isBlank() -> OutlinedButton(
                                 modifier = Modifier
                                     .heightIn(min = actionHeight)
                                     .testTag("restore_last_copy"),
                                 shapes = ButtonDefaults.shapes(),
                                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                                 contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
-                                onClick = { text = lastCopiedText },
+                                onClick = {
+                                    textFieldValue = TextFieldValue(
+                                        text = lastCopiedText,
+                                        selection = TextRange(lastCopiedText.length),
+                                    )
+                                    focusRequester.requestFocus()
+                                    keyboardController?.show()
+                                },
                             ) {
                                 Text("Restore", maxLines = 1)
                             }
