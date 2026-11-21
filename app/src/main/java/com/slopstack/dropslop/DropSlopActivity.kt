@@ -8,6 +8,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -46,9 +47,9 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MotionScheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.Typography
@@ -117,7 +118,15 @@ class DropSlopActivity : ComponentActivity() {
 
 private val GoogleSansFlex = FontFamily(Font(R.font.google_sans_flex))
 
-private val DropSlopTypography = Typography(defaultFontFamily = GoogleSansFlex)
+private val DropSlopTypography = Typography().let { base ->
+    base.copy(
+        titleMedium = base.titleMedium.copy(fontFamily = GoogleSansFlex),
+        bodyLarge = base.bodyLarge.copy(fontFamily = GoogleSansFlex),
+        bodyMedium = base.bodyMedium.copy(fontFamily = GoogleSansFlex),
+        labelLarge = base.labelLarge.copy(fontFamily = GoogleSansFlex),
+        labelMedium = base.labelMedium.copy(fontFamily = GoogleSansFlex),
+    )
+}
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -310,12 +319,13 @@ fun DropSlopPopup(
                                 color = MaterialTheme.colorScheme.secondary,
                                 maxLines = 1,
                             )
-                            lastCopiedText != null && text.isBlank() -> TextButton(
+                            lastCopiedText != null && text.isBlank() -> OutlinedButton(
                                 modifier = Modifier
                                     .heightIn(min = actionHeight)
                                     .testTag("restore_last_copy"),
                                 shapes = ButtonDefaults.shapes(),
-                                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
                                 onClick = { text = lastCopiedText },
                             ) {
                                 Text("Restore", maxLines = 1)
